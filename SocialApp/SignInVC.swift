@@ -10,6 +10,8 @@ import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 import Firebase
+import SwiftKeychainWrapper
+
 
 class SignInVC: UIViewController {
 
@@ -20,8 +22,13 @@ class SignInVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
         
-        
+        if let _ = KeychainWrapper.standard.string(forKey: KEY_UID) {
+            performSegue(withIdentifier: "goToFeed", sender: nil)
+        }
     }
 
 
@@ -52,6 +59,10 @@ class SignInVC: UIViewController {
                 
                 if error == nil {
                     print("WOJTEK: EMAIL USER AUTHENTICATED WITH FIREBASE")
+                    if let user = user {
+                        self.completeSignIn(id: user.uid)
+                    }
+                    
                 } else {
                     FIRAuth.auth()?.createUser(withEmail: email, password: pwd, completion: { (user, error) in
                         if error != nil {
@@ -60,6 +71,10 @@ class SignInVC: UIViewController {
                         } else {
                             
                             print("WOJTEK: SUCCESFULLY AUTHENTICATED WITH FIREBASE")
+                            if let user = user {
+                                self.completeSignIn(id: (user.uid))
+                            }
+                            
                         }
                     })
                 }
@@ -74,9 +89,37 @@ class SignInVC: UIViewController {
                 print("WOJTEK: UNABLE TO AUTHENTICATE WITH FIREBASE - \(error)")
             } else {
                 print("WOJTEK: SUCCESFULLY AUTHENTICATED WITH FIREBASE")
+                if let user = user {
+                self.completeSignIn(id: user.uid)
+                }
+                
             }
         })
     }
+    
+    func completeSignIn(id: String) {
+        
+        let keychainResult = KeychainWrapper.standard.set(id, forKey: KEY_UID)
+        print("WOJTEK: DATA SAVED TO KEYCHAIN \(keychainResult)")
+        performSegue(withIdentifier: "goToFeed", sender: nil)
+    }
+    
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
