@@ -60,7 +60,8 @@ class SignInVC: UIViewController {
                 if error == nil {
                     print("WOJTEK: EMAIL USER AUTHENTICATED WITH FIREBASE")
                     if let user = user {
-                        self.completeSignIn(id: user.uid)
+                        let userData = ["provider": user.providerID]
+                        self.completeSignIn(id: user.uid, userData: userData)
                     }
                     
                 } else {
@@ -72,7 +73,8 @@ class SignInVC: UIViewController {
                             
                             print("WOJTEK: SUCCESFULLY AUTHENTICATED WITH FIREBASE")
                             if let user = user {
-                                self.completeSignIn(id: (user.uid))
+                                let userData = ["provider": user.providerID]
+                                self.completeSignIn(id: user.uid, userData: userData)
                             }
                             
                         }
@@ -90,15 +92,17 @@ class SignInVC: UIViewController {
             } else {
                 print("WOJTEK: SUCCESFULLY AUTHENTICATED WITH FIREBASE")
                 if let user = user {
-                self.completeSignIn(id: user.uid)
+                    let userData = ["provider": credential.provider]
+                    self.completeSignIn(id: user.uid, userData: userData)
                 }
                 
             }
         })
     }
     
-    func completeSignIn(id: String) {
+    func completeSignIn(id: String, userData: Dictionary<String, String>) {
         
+        DataService.ds.createFirebaseDBUser(uid: id, userData: userData)
         let keychainResult = KeychainWrapper.standard.set(id, forKey: KEY_UID)
         print("WOJTEK: DATA SAVED TO KEYCHAIN \(keychainResult)")
         performSegue(withIdentifier: "goToFeed", sender: nil)
