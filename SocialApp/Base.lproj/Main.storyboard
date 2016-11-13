@@ -149,8 +149,7 @@
                                             <outletCollection property="gestureRecognizers" destination="57g-O5-bbX" appends="YES" id="lyW-Zp-nn0"/>
                                         </connections>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Feed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="koG-uj-dGy">
-                                        <frame key="frameInset" minX="129" minY="27" width="116" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Feed" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="koG-uj-dGy">
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="26"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -169,12 +168,16 @@
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="9r5-ld-dLz">
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add-image" translatesAutoresizingMaskIntoConstraints="NO" id="tH1-MR-tzR" customClass="CircleView" customModule="SocialApp" customModuleProvider="target">
+                                            <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add-image" translatesAutoresizingMaskIntoConstraints="NO" id="tH1-MR-tzR" customClass="CircleView" customModule="SocialApp" customModuleProvider="target">
                                                 <color key="backgroundColor" red="0.84705882349999995" green="0.26274509800000001" blue="0.08235294118" alpha="1" colorSpace="calibratedRGB"/>
+                                                <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="49" id="aJJ-Mp-zmI"/>
                                                     <constraint firstAttribute="width" constant="49" id="kxN-I9-khe"/>
                                                 </constraints>
+                                                <connections>
+                                                    <outletCollection property="gestureRecognizers" destination="oe4-14-enB" appends="YES" id="ala-P4-41q"/>
+                                                </connections>
                                             </imageView>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add a caption" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Cy4-eu-OlY" customClass="CustomTextField" customModule="SocialApp" customModuleProvider="target">
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -308,6 +311,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addImage" destination="tH1-MR-tzR" id="92n-m7-Qxe"/>
                         <outlet property="tableView" destination="viM-kb-RNd" id="RV3-N6-gVA"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="goToSignIn" id="Hd7-0x-XDY"/>
                     </connections>
@@ -316,6 +320,11 @@
                 <tapGestureRecognizer id="57g-O5-bbX">
                     <connections>
                         <action selector="signOutTapped:" destination="lu5-im-uO7" id="aeT-cY-GCn"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="oe4-14-enB">
+                    <connections>
+                        <action selector="addImageTapped:" destination="lu5-im-uO7" id="cMf-db-J9R"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
