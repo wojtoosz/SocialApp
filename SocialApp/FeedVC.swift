@@ -14,10 +14,12 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addImage: CircleView!
+    @IBOutlet weak var captionField: CustomTextField!
     
     var posts = [Post]()
     var imagePicker: UIImagePickerController!
     static var imageCache: NSCache<NSString, UIImage> = NSCache()
+    var imageSelected = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,6 +53,7 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         if let image = info[UIImagePickerControllerEditedImage] as? UIImage {
             
             addImage.image = image
+            imageSelected = true
         } else {
             print("WOJTEK: A VALID IMAGE WASNT SELECTED")
         }
@@ -101,7 +104,48 @@ class FeedVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UIIm
         present(imagePicker, animated: true, completion: nil)
     }
     
+    @IBAction func postBtnTapped(_ sender: AnyObject) {
+        
+        guard let caption = captionField.text, caption != "" else {
+            print("WOJTEK: CAPTION MUST BE ENTERED")
+            return
+        }
+        
+        guard let img = addImage.image, imageSelected == true else {
+            print("WOJTEK: AN IMAGE MUST BE SELECTED")
+            return
+        }
+        
+        if let imgData = UIImageJPEGRepresentation(img, 0.2) {
+            
+            let imgUid = NSUUID().uuidString
+            let metadata = FIRStorageMetadata()
+            metadata.contentType = "image/jpeg"
+            
+            DataService.ds.REF_POST_IMAGES.child(imgUid).put(imgData, metadata: metadata) { (metadata, error) in
+                
+                if error != nil {
+                    print("WOJTEK: UNABLE TO UPLOAD IMAGE TO FIREBASE")
+                } else {
+                    print("WOJTEK: SUCCESSFULLY UPLOADED IMAGE TO FIREBASE")
+                    let downloadUrl = metadata?.downloadURL()?.absoluteString
+                    
+                }
+            }
+        }
+    }
 
     
 
 }
+
+
+
+
+
+
+
+
+
+
+
